@@ -41,6 +41,9 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
+                    	@if(Auth::check())
+                    	<li><a href="{{ route('companies.index') }}">My companies</a></li>
+                    	@endif
                         <!-- Authentication Links -->
                         @guest
                             <li><a href="{{ route('login') }}">Login</a></li>
