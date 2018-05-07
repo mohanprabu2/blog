@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Route;
     return view('welcome');
 }); */
 
-Route::get('/', 'ListController@show');
+Route::get('/', 'CompaniesController@index');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'CompaniesController@index')->name('home');
 
 Route::resource('companies', 'CompaniesController');
 Route::resource('projects', 'ProjectsController');
