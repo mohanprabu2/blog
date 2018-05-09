@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,3 +28,5 @@ Route::resource('projects', 'ProjectsController');
 Route::resource('roles', 'RolesController');
 Route::resource('tasks', 'TasksController');
 Route::resource('users', 'UsersController');
+
+Route::get('projects/create/{id}', 'ProjectsController@create');

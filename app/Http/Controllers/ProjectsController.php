@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
 use App\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectsController extends Controller
 {
@@ -22,9 +24,9 @@ class ProjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        
+        return view('projects.create', ['company_id' => $id]);
     }
 
     /**
@@ -35,7 +37,25 @@ class ProjectsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if(Auth::check()) {
+            $project = Project::create([
+                'name'=>$request->input('name'),
+                'description'=>$request->input('description'),
+                'days'=>$request->input('days'),
+                'company_id' => $request->input('company_id'),
+                'user_id' => Auth::user()->id
+            ]);
+            
+            if($project){
+                $company = Company::find($request->input('company_id'));
+                return redirect()->route('companies.show', ['company'=>$company])
+                ->with('success','Projects added successfully!');
+            }
+        } else {
+            return back()->withInput()->with('errors', ['Please loging to add new project']);
+        }
+        
+        return back()->withInput()->with('errors', ['Error add new projects']);
     }
 
     /**
@@ -46,7 +66,9 @@ class ProjectsController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $project = Project::find($project->id);
+        //$projects = Project::find($company->id);
+        return view('projects.show', ['project'=>$project]);
     }
 
     /**
@@ -57,7 +79,8 @@ class ProjectsController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        $project = Project::find($project->id);
+        return view('projects.edit', ['project'=>$project]);
     }
 
     /**
@@ -69,7 +92,19 @@ class ProjectsController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $projectUpdate = Project::where('id', $project->id)
+        ->update([
+            'name'=>$request->input('name'),
+            'description'=>$request->input('description'),
+            'days'=>$request->input('days')
+        ]);
+        
+        if($projectUpdate){
+            return redirect()->route('projects.show',['project'=>$project->id])
+            ->with('success','Project updated successfully!');
+        }
+        
+        return back()->withInput()->with('error', ['Project not updated']);
     }
 
     /**
@@ -80,6 +115,11 @@ class ProjectsController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $findProject = Project::find($project->id);
+        if($findProject->delete()) {
+            return redirect()->route('companies.show', $project->company_id)
+            ->with('success','Project deleted successfully!');
+        }
+        return back()->withInput()->with('error', ['Project not deleted']);
     }
 }

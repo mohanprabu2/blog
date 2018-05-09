@@ -22,7 +22,7 @@
 	<ul class="list-group">
 		<li class="list-group-item"><a href="/blog/public/index.php/companies">List companies</a></li>
 		<li class="list-group-item"><a href="/blog/public/index.php/companies/{{$company->id}}/edit">Edit company</a></li>
-		<li class="list-group-item"><a href="/blog/public/index.php/projects/create">Add new project</a></li>
+		<li class="list-group-item"><a href="/blog/public/index.php/projects/create/{{$company->id}}">Add new project</a></li>
 		<li class="list-group-item"><a href="/blog/public/index.php/companies/create">Create new company</a></li>
 		<br />
 		<li class="list-group-item">
