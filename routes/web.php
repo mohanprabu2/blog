@@ -28,5 +28,6 @@ Route::resource('projects', 'ProjectsController');
 Route::resource('roles', 'RolesController');
 Route::resource('tasks', 'TasksController');
 Route::resource('users', 'UsersController');
+//Route::get('/user', 'UsersController@index');
 
 Route::get('projects/create/{id}', 'ProjectsController@create');
